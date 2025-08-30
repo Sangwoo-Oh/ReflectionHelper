@@ -14,7 +14,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url('/google/redirect') }}">Login</a>
+                    @auth
+                        <a class="nav-link active" aria-current="page" href="{{ url('/logout') }}">Logout</a>
+                    @else
+                        <a class="nav-link active" aria-current="page" href="{{ url('/google/redirect') }}">Login</a>
+                    @endauth
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#">Features</a>

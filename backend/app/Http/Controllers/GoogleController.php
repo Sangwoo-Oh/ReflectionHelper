@@ -2,41 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use Google_Client;
-use Google_Service_Calendar;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
     public function redirectToGoogle()
     {
-        $client = new Google_Client();
-        $client->setClientId(env('GOOGLE_CLIENT_ID'));
-        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
-        $client->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
-        $client->addScope(Google_Service_Calendar::CALENDAR_READONLY);
-
-        // 認証 URL を生成してリダイレクト
-        return redirect()->away($client->createAuthUrl());
+        return Socialite::driver('google')
+            ->scopes([
+                'openid',
+                'profile',
+                'email',
+                'https://www.googleapis.com/auth/calendar'
+            ])
+            ->redirect();
     }
 
     public function handleCallback(Request $request)
     {
-        $client = new Google_Client();
-        $client->setClientId(env('GOOGLE_CLIENT_ID'));
-        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
-        $client->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
+        $googleUser = Socialite::driver('google')->user();
+        // dd($googleUser);
 
-        $code = $request->get('code');
-        if (!$code) {
-            return 'Authorization code not found';
+        $user = User::where('google_id', $googleUser?->id)->first();
+        // dd($user);
+        if (!$user) {
+            $user = User::updateOrCreate([
+                'google_id' => $googleUser?->id,
+            ], [
+                'name' => $googleUser?->name,
+                'email' => $googleUser?->email,
+                'google_token' => $googleUser?->token,
+                'google_refresh_token' => $googleUser?->refreshToken,
+            ]);
         }
 
-        $token = $client->fetchAccessTokenWithAuthCode($code);
+        Auth::login($user);
 
-        $client->setAccessToken($token);
+        return redirect('/');
+    }
 
-        session(['google_token' => $token]);
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }

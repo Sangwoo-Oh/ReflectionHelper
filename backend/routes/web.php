@@ -2,38 +2,32 @@
 
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
+use Google\Client;
+use Google\Service\Calendar;
 
 Route::get('/', function () {
-    $token = session('google_token');
+    if (auth()->check()) {
+        $user = auth()->user(); // Assign the authenticated user
 
-    if (!$token) return view('welcome');
+        $client = new Client();
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $client->setAccessToken($user->google_token);
+        // dd($client);
+        // Refresh the access token if expired and refresh token exists
+        if ($client->isAccessTokenExpired() && $user->google_refresh_token) {
+            $client->fetchAccessTokenWithRefreshToken($user->google_refresh_token);
+            // Save the new token to DB or session as needed
+        }
 
-    // $client = new Google_Client();
-    // $client->setClientId(env('GOOGLE_CLIENT_ID'));
-    // $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
-    // $client->setAccessToken($token);
-
-    // // 必要なら期限切れチェックして refreshToken で更新
-    // if ($client->isAccessTokenExpired() && isset($token['refresh_token'])) {
-    //     $client->fetchAccessTokenWithRefreshToken($token['refresh_token']);
-    //     session(['google_token' => $client->getAccessToken()]);
-    // }
-
-    // $service = new Google_Service_Calendar($client);
-    // $calendarList = $service->calendarList->listCalendarList();
-
-    // return view('welcome', ['calendarItems' => $calendarList->getItems()]);
+        $service = new Calendar($client);
+        // dd($service);
+        $calendarList = $service->calendarList->listCalendarList();
+        return view('welcome', compact('calendarList'));
+    } else {
+        return view('welcome');
+    }
 })->name('welcome');
-// Route::get('/google/redirect', [GoogleController::class, 'redirectToGoogle']);
-// Route::get('/google/callback', [GoogleController::class, 'handleCallback']);
-
-Route::get('/google/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
-
-Route::get('/google/callback', function () {
-    $user = Socialite::driver('google')->user();
-    dd($user);
-    // $user->token
-});
+Route::get('/google/redirect', [GoogleController::class, 'redirectToGoogle']);
+Route::get('/google/callback', [GoogleController::class, 'handleCallback']);
+Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
