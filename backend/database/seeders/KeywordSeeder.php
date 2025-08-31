@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Keyword;
+use App\Models\SearchKeyword;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,5 +19,12 @@ class KeywordSeeder extends Seeder
         Keyword::factory()->count(10)->create([
             'user_id' => $user->id
         ]);
+
+        $keywords = Keyword::all();
+        foreach ($keywords as $keyword) {
+            SearchKeyword::factory()->count(5)->create([
+                'keyword_id' => $keyword->id
+            ]);
+        }
     }
 }

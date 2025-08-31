@@ -15,5 +15,10 @@ class Keyword extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function searchKeywords()
+    {
+        return $this->hasMany(SearchKeyword::class);
+    }
+
     protected $fillable = ['keyword'];
 }
