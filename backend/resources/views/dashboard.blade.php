@@ -24,7 +24,12 @@
         @if (session('events'))
         <ul>
             @foreach (session('events') as $event)
-                <li>{{ $event->getSummary() }}</li>
+                <li>
+                    <strong>{{ $event->getSummary() }}</strong>
+                    <br>
+                    <em>{{ $event->getStart()->dateTime }} - {{ $event->getEnd()->dateTime }}</em>
+                    <br>
+                </li>
             @endforeach
         </ul>
         @endif
