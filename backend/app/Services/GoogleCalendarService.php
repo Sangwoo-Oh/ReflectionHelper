@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\CalendarServiceInterface;
+use DateTime;
 use Google\Client;
 use Google\Service\Calendar;
 
@@ -33,13 +34,27 @@ class GoogleCalendarService implements CalendarServiceInterface
         $this->calendarService = new Calendar($this->client);
     }
 
-    public function listEvents(): array
-    {
+    public function listEvents(
+        string $keyword = "",
+        DateTime $startDate = null,
+        DateTime $endDate = null,
+        string $calendarId = 'primary'
+    ): array {
+        $params = [];
+        if ($keyword) {
+            $params['q'] = $keyword;
+        }
+        if ($startDate) {
+            $params['timeMin'] = $startDate->format(DateTime::RFC3339);
+        }
+        if ($endDate) {
+            $params['timeMax'] = $endDate->format(DateTime::RFC3339);
+        }
+
         $events = [];
-        $calendarId = 'primary';
 
         try {
-            $response = $this->calendarService->events->listEvents($calendarId);
+            $response = $this->calendarService->events->listEvents($calendarId, $params);
             $events = $response->getItems();
         } catch (\Exception $e) {
             throw new \RuntimeException('Failed to retrieve events');
