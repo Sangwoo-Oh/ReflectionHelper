@@ -12,7 +12,7 @@
             <select name="keyword">
                 <option value="">選択してください</option>
                 @foreach ($keywords as $keyword)
-                    <option value="{{ $keyword->keyword }}" {{ old('keyword') == $keyword->keyword ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
+                    <option value="{{ $keyword->id }}" {{ old('keyword') == $keyword->id ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
                 @endforeach
             </select>
             <label>開始日:</label>

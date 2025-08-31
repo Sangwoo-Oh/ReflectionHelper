@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CalendarServiceInterface;
+use App\Models\SearchKeyword;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,8 @@ class AggregateController extends Controller
             $queries[] = $freeword;
         }
         if (!empty($keyword)) {
-            $queries[] = $keyword;
+            $searchKeywords = SearchKeyword::where('keyword_id', $keyword);
+            $queries = array_merge($searchKeywords->pluck('search_keyword')->toArray(), $queries);
         }
 
         $events = [];
