@@ -7,7 +7,14 @@ use App\Http\Controllers\KeywordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (?CalendarServiceInterface $calendarServiceInterface) {
-    return view('dashboard');
+    $user = auth()->user();
+    if ($user) {
+        $keywords = $user->keywords;
+        // dd($keywords);
+        return view('dashboard', compact('keywords'));
+    } else {
+        return view('dashboard');
+    }
 })->name('dashboard');
 
 Route::get('/google/redirect', [GoogleController::class, 'redirectToGoogle']);

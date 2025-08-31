@@ -6,8 +6,15 @@
         <h2>Your Events:</h2>
         <form action="{{ route('aggregate') }}" method="POST">
             @csrf
+            <label>フリーワード:</label>
+            <input type="text" name="freeword" value="{{ old('freeword') }}">
             <label>キーワード:</label>
-            <input type="text" name="keyword" value="{{ old('keyword') }}">
+            <select name="keyword">
+                <option value="">選択してください</option>
+                @foreach ($keywords as $keyword)
+                    <option value="{{ $keyword->keyword }}" {{ old('keyword') == $keyword->keyword ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
+                @endforeach
+            </select>
             <label>開始日:</label>
             <input type="date" name="start_date" value="{{ old('start_date') }}">
             <label>終了日:</label>

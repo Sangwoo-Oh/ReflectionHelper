@@ -35,14 +35,14 @@ class GoogleCalendarService implements CalendarServiceInterface
     }
 
     public function listEvents(
-        string $keyword = "",
+        string $query = "",
         DateTime $startDate = null,
         DateTime $endDate = null,
         string $calendarId = 'primary'
     ): array {
         $params = [];
-        if ($keyword) {
-            $params['q'] = $keyword;
+        if ($query) {
+            $params['q'] = $query;
         }
         if ($startDate) {
             $params['timeMin'] = $startDate->format(DateTime::RFC3339);

@@ -10,16 +10,29 @@ class AggregateController extends Controller
 {
     public function aggregateEvents(Request $request, CalendarServiceInterface $calendarServiceInterface)
     {
+        $freeword = $request->input('freeword') ?? "";
         $keyword = $request->input('keyword') ?? "";
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $startDate = isset($startDate) ? new DateTime($startDate) : null;
         $endDate = isset($endDate) ? new DateTime($endDate) : null;
 
-        // dd($keyword, $startDate, $endDate);
+        // dd($freeword, $startDate, $endDate);
 
-        // ここでイベントの集計処理を行う
-        $events = $calendarServiceInterface->listEvents($keyword, $startDate, $endDate);
+        $queries = [];
+        if (!empty($freeword)) {
+            $queries[] = $freeword;
+        }
+        if (!empty($keyword)) {
+            $queries[] = $keyword;
+        }
+
+        $events = [];
+        foreach ($queries as $query) {
+            $events = array_merge($events, $calendarServiceInterface->listEvents($query, $startDate, $endDate));
+        }
+
+        $events = array_unique($events, SORT_REGULAR);
 
         // dd($events);
 

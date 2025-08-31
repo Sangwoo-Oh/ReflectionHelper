@@ -10,5 +10,10 @@ class Keyword extends Model
     /** @use HasFactory<\Database\Factories\KeywordFactory> */
     use HasFactory;
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected $fillable = ['keyword'];
 }
