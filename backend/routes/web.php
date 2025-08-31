@@ -1,15 +1,13 @@
 <?php
 
+use App\CalendarServiceInterface;
 use App\Http\Controllers\GoogleController;
-use App\Services\GoogleService;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/', function (?CalendarServiceInterface $calendarServiceInterface) {
     if (auth()->check()) {
-        $user = auth()->user(); // Assign the authenticated user
-        $googleService = new GoogleService($user);
-        $calendarList = $googleService->getCalendarService()->calendarList->listCalendarList();
-        return view('welcome', compact('calendarList'));
+        $events = $calendarServiceInterface->listEvents();
+        return view('welcome', compact('events'));
     } else {
         return view('welcome');
     }

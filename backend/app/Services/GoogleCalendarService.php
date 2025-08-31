@@ -1,10 +1,11 @@
 <?php
 namespace App\Services;
 
+use App\CalendarServiceInterface;
 use Google\Client;
 use Google\Service\Calendar;
 
-class GoogleService
+class GoogleCalendarService implements CalendarServiceInterface
 {
     protected $client;
     protected $calendarService;
@@ -32,13 +33,17 @@ class GoogleService
         $this->calendarService = new Calendar($this->client);
     }
 
-    public function getClient()
+    public function listEvents(): array
     {
-        return $this->client;
-    }
+        $events = [];
+        $calendarId = 'primary';
 
-    public function getCalendarService()
-    {
-        return $this->calendarService;
+        try {
+            $response = $this->calendarService->events->listEvents($calendarId);
+            $events = $response->getItems();
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to retrieve events');
+        }
+        return $events;
     }
 }
