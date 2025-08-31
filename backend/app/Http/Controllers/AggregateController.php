@@ -23,6 +23,6 @@ class AggregateController extends Controller
 
         // dd($events);
 
-        return view('welcome')->with('events', $events);
+        return redirect()->route('dashboard')->withInput()->with('events', $events); // 集計結果保持
     }
 }
