@@ -57,7 +57,7 @@ class GoogleCalendarService implements CalendarServiceInterface
             $response = $this->calendarService->events->listEvents($calendarId, $params);
             $events = $response->getItems();
         } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to retrieve events');
+            throw new \RuntimeException("Failed to fetch events from Google Calendar: " . $e->getMessage());
         }
         return $events;
     }

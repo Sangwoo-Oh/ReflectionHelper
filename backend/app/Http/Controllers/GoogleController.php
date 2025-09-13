@@ -29,16 +29,14 @@ class GoogleController extends Controller
 
         $user = User::where('google_id', $googleUser?->id)->first();
         // dd($user);
-        if (!$user) {
-            $user = User::updateOrCreate([
-                'google_id' => $googleUser?->id,
-            ], [
-                'name' => $googleUser?->name,
-                'email' => $googleUser?->email,
-                'google_token' => $googleUser?->token,
-                'google_refresh_token' => $googleUser?->refreshToken,
-            ]);
-        }
+        $user = User::updateOrCreate([
+            'google_id' => $googleUser?->id,
+        ], [
+            'name' => $googleUser?->name,
+            'email' => $googleUser?->email,
+            'google_token' => $googleUser?->token,
+            'google_refresh_token' => $googleUser?->refreshToken,
+        ]);
 
         Auth::login($user);
 
