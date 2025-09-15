@@ -10,8 +10,11 @@ class KeywordController extends Controller
     public function index()
     {
         $keywords = Keyword::all();
-        // dd($keywords);
-        // return view('keywords.index', compact('keywords'));
+        $searchKeywords = [];
+        foreach ($keywords as $keyword) {
+            $searchKeywords[$keyword->id] = $keyword->searchKeywords;
+        }
+        return view('keywords.index', compact('keywords', 'searchKeywords'));
     }
 
     public function store(Request $request)

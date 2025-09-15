@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\CalendarServiceInterface;
@@ -35,7 +36,7 @@ class GoogleCalendarService implements CalendarServiceInterface
     }
 
     public function listEvents(
-        string $query = "",
+        string $query = '',
         DateTime $startDate = null,
         DateTime $endDate = null,
         string $calendarId = 'primary'
@@ -57,7 +58,7 @@ class GoogleCalendarService implements CalendarServiceInterface
             $response = $this->calendarService->events->listEvents($calendarId, $params);
             $events = $response->getItems();
         } catch (\Exception $e) {
-            throw new \RuntimeException("Failed to fetch events from Google Calendar: " . $e->getMessage());
+            throw new \RuntimeException('Failed to fetch events from Google Calendar: ' . $e->getMessage());
         }
         return $events;
     }

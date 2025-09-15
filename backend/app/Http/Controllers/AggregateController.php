@@ -11,8 +11,8 @@ class AggregateController extends Controller
 {
     public function aggregateEvents(Request $request, CalendarServiceInterface $calendarServiceInterface)
     {
-        $freeword = $request->input('freeword') ?? "";
-        $keyword = $request->input('keyword') ?? "";
+        $freeword = $request->input('freeword') ?? '';
+        $keyword = $request->input('keyword') ?? '';
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $startDate = isset($startDate) ? new DateTime($startDate) : null;
