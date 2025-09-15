@@ -20,5 +20,5 @@ class Keyword extends Model
         return $this->hasMany(SearchKeyword::class);
     }
 
-    protected $fillable = ['keyword'];
+    protected $fillable = ['keyword', 'user_id'];
 }

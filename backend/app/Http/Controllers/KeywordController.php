@@ -19,12 +19,25 @@ class KeywordController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'keyword' => 'required|string|max:255',
+        ]);
+
+        // dd($validatedData);
+
+        // dd(auth()->id());
+        $keyword = Keyword::create([
+            'keyword' => $validatedData['keyword'],
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()->route('keywords.index')->with('success', 'Keyword created successfully.');
     }
 
     public function show(Keyword $keyword)
     {
-        //
+        $keyword = Keyword::with('searchKeywords')->findOrFail($keyword->id);
+        return view('keywords.show', compact('keyword'));
     }
 
     public function update(Request $request, Keyword $keyword)
