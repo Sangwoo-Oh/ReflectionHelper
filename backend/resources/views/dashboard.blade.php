@@ -1,9 +1,8 @@
 @component('components.header')
 @endcomponent
 
-    <h1>Welcome to Reflection Helper</h1>
     @auth
-        <h2>Your Events:</h2>
+        <h2>カレンダー集計:</h2>
         <form action="{{ route('aggregate') }}" method="POST">
             @csrf
             <label>フリーワード:</label>
@@ -34,7 +33,8 @@
         </ul>
         @endif
     @else
-        <p>Please log in to see your events.</p>
+        <h1>カレンダー集計・分析アプリ「シューカレ」</h1>
+        <p>ログインしてイベントを確認してください。</p>
     @endauth
 @component('components.footer')
 @endcomponent
