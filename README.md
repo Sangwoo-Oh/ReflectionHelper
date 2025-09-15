@@ -38,3 +38,8 @@ ReflectionHelperは、Googleカレンダーと連携して過去の予定を集�
 ```
 To be added
 ```
+
+## よくある不具合と解決方法
+### 1. ログイン処理が走った時にLaravel\Socialite\Two\InvalidStateExceptionが投げられる
+クライアントのURIとユーザーログイン後のリダイレクトURIのオリジンが異なりCookieを通じて交換される情報（state）が失われることが原因であることが多いです。Google Cloud Platformコンソールで設定した承認済みのリダイレクトURIのオリジンと同じオリジンでブラウザからアプリを立ち上げてください。localhostで設定したのなら、localhostでブラウザを立ち上げる。
+
