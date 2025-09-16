@@ -1,19 +1,21 @@
-@component('components.header')
-@endcomponent
+@extends('layouts')
+
+@section('content')
     <h1>キーワード管理ページ</h1>
     @if(session('success'))
-        <div class="alert alert-success" role="alert">
+    <?php dd(session()) ?>
+        @component('components.alert', ['type' => 'success'])
             {{ session('success') }}
-        </div>
+        @endcomponent
     @endif
     @if($errors->any())
-        <div class="alert alert-danger" role="alert">
+        @component('components.alert', ['type' => 'danger'])
             <ul class="mb-0">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>
+        @endcomponent
     @endif
     <form action="{{ route('keywords.store') }}" method="POST">
         <div class="d-flex align-items-end mb-3">
@@ -72,6 +74,5 @@
             </tr>
             @endforeach
         </tbody>
-        </table>
-@component('components.footer')
-@endcomponent
+    </table>
+@endsection

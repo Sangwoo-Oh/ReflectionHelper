@@ -1,6 +1,6 @@
-@component('components.header')
-@endcomponent
+@extends('layouts')
 
+@section('content')
     @auth
         <h2>カレンダー集計:</h2>
         <form action="{{ route('aggregate') }}" method="POST">
@@ -36,5 +36,5 @@
         <h1>カレンダー集計・分析アプリ「シューカレ」</h1>
         <p>ログインしてイベントを確認してください。</p>
     @endauth
-@component('components.footer')
-@endcomponent
+
+@endsection
