@@ -24,5 +24,5 @@ Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
 
 Route::post('/aggregate', [AggregateController::class, 'aggregateEvents'])->name('aggregate');
 
-Route::resource('keywords', KeywordController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+Route::resource('keywords', KeywordController::class)->only(['index', 'show', 'edit', 'store', 'update', 'destroy']);
 Route::resource('search-keywords', SearchKeywordController::class)->only(['store', 'update', 'destroy']);

@@ -20,4 +20,10 @@ class SearchKeywordController extends Controller
         ]);     
         return redirect()->back()->with('success', 'Search keyword added successfully.');
     }
+
+    function destroy(SearchKeyword $searchKeyword)
+    {
+        $searchKeyword->delete();
+        return redirect()->back()->with('success', 'Search keyword "' . $searchKeyword->search_keyword . '" deleted successfully.');
+    }
 }

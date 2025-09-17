@@ -3,7 +3,6 @@
 @section('content')
     <h1>キーワード管理ページ</h1>
     @if(session('success'))
-    <?php dd(session()) ?>
         @component('components.alert', ['type' => 'success'])
             {{ session('success') }}
         @endcomponent
@@ -54,6 +53,7 @@
                 <th scope="col">キーワード</th>
                 <th scope="col">検索ワード</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -69,7 +69,14 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('keywords.show', $keyword->id) }}" class="btn btn-secondary">詳細</a>
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ route('keywords.show', $keyword->id) }}" class="btn btn-secondary">詳細</a>
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ route('keywords.edit', $keyword->id) }}" class="btn btn-secondary">編集</a>
+                    </div>
                 </td>
             </tr>
             @endforeach
