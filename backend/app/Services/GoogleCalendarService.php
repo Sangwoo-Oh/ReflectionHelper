@@ -95,7 +95,7 @@ class GoogleCalendarService implements CalendarServiceInterface
             $response = $this->calendarService->events->listEvents(
                 $calendarId, 
                 [
-                    'maxResults' => 2500,
+                    'maxResults' => 500,
                     'pageToken' => $nextPageToken
                 ]
             );
@@ -132,7 +132,7 @@ class GoogleCalendarService implements CalendarServiceInterface
             $response = $this->calendarService->events->listEvents('primary', [
                 'pageToken' => $nextPageToken,
                 'syncToken' => $calendarSyncToken->sync_token,
-                'maxResults' => 2500,
+                'maxResults' => 500,
             ]);
             foreach ($response->getItems() as $event) {
                 $existingEvent = \App\Models\Event::where('event_id', $event->getId())->first();

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('calendars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('calendar_id')->unique();
+            $table->string('calendar_id');
             $table->string('summary')->nullable();
             $table->string('description')->nullable();
             $table->string('time_zone')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('calendar_id')->references('id')->on('calendars')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('event_id')->unique();
+            $table->string('event_id');
             $table->string('summary')->nullable();
             $table->text('description')->nullable();
             $table->dateTime('start_time')->nullable();
