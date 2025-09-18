@@ -67,7 +67,7 @@ class AggregateController extends Controller
             $eventsQuery->where('end_time', '<=', $endDate->format('Y-m-d') . 'T23:59:59Z');
         }
 
-        $events = $eventsQuery->get();
+        $events = $eventsQuery->orderBy('start_time', 'asc')->get();
 
         $summary = [];
         $sumDuration = 0;

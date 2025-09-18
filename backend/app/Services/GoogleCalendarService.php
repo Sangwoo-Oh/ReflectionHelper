@@ -96,7 +96,8 @@ class GoogleCalendarService implements CalendarServiceInterface
                 $calendarId, 
                 [
                     'maxResults' => 500,
-                    'pageToken' => $nextPageToken
+                    'pageToken' => $nextPageToken,
+                    'singleEvents' => true,
                 ]
             );
             \App\Models\Event::insert(array_map(function($event) {
@@ -133,6 +134,7 @@ class GoogleCalendarService implements CalendarServiceInterface
                 'pageToken' => $nextPageToken,
                 'syncToken' => $calendarSyncToken->sync_token,
                 'maxResults' => 500,
+                'singleEvents' => true,
             ]);
             foreach ($response->getItems() as $event) {
                 $existingEvent = \App\Models\Event::where('event_id', $event->getId())->first();
