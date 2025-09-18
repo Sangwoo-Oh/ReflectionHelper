@@ -11,6 +11,9 @@ class AggregateController extends Controller
 {
     public function aggregateEvents(Request $request, CalendarServiceInterface $calendarServiceInterface)
     {
+        // dd($request->input('reaggregate'));
+        $is_reaggregate = !is_null($request->input('reaggregate'));
+
         $user = auth()->user();
         $calendar = $user->calendar;
         if (!$calendar) {
@@ -45,11 +48,17 @@ class AggregateController extends Controller
         $events = [];
         $eventsQuery = auth()->user()->calendar->events();
 
-        $eventsQuery->where(function ($q) use ($queries) {
-            foreach ($queries as $query) {
-                $q->orWhere('summary', 'like', '%' . $query . '%');
-            }
-        });
+        if ($is_reaggregate) {
+            // 再集計の場合
+            $event_ids = $request->input('event_ids') ?? [];
+            $eventsQuery->whereIn('id', $event_ids);
+        } else {
+            $eventsQuery->where(function ($q) use ($queries) {
+                foreach ($queries as $query) {
+                    $q->orWhere('summary', 'like', '%' . $query . '%');
+                }
+            });
+        }
 
         if ($startDate) {
             $eventsQuery->where('start_time', '>=', $startDate->format('Y-m-d') . 'T00:00:00Z');
@@ -60,7 +69,6 @@ class AggregateController extends Controller
 
         $events = $eventsQuery->get();
 
-        // dd($events);
         $summary = [];
         $sumDuration = 0;
         foreach ($events as $event) {
