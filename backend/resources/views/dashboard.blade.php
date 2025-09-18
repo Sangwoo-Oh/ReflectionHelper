@@ -2,7 +2,7 @@
 
 @section('content')
     @auth
-        <h2>カレンダー集計:</h2>
+        <h2>集計・分析</h2>
         <form action="{{ route('aggregate') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -29,16 +29,50 @@
             <button type="submit" class="btn btn-primary">集計</button>
         </form>
         @if (session('events'))
-        <ul>
-            @foreach (session('events') as $event)
-                <li>
-                    <strong>{{ $event->getSummary() }}</strong>
-                    <br>
-                    <em>{{ $event->getStart()->dateTime }} - {{ $event->getEnd()->dateTime }}</em>
-                    <br>
-                </li>
-            @endforeach
-        </ul>
+
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">合計時間</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.sumDuration') }} </span>時間</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">平均時間</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.averageDuration') }} </span>時間</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">活動日数</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.countDays') }} </span>日</p>
+                </div>
+            </div>
+            </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">日付</th>
+                    <th scope="col">スケジュール名</th>
+                    <th scope="col">開始時間</th>
+                    <th scope="col">終了時間</th>
+                    <th scope="col">合計時間</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (session('events') as $event)
+                <tr>
+                    <td>{{ $event->getStart()->dateTime }}</td>
+                    <td>{{ $event->getSummary() }}</td>
+                    <td>{{ $event->getStart()->dateTime }}</td>
+                    <td>{{ $event->getEnd()->dateTime }}</td>
+                    <td>15時間</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         @endif
     @else
         <h1>カレンダー集計・分析アプリ「シューカレ」</h1>

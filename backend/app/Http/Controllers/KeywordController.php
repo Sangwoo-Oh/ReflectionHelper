@@ -9,7 +9,8 @@ class KeywordController extends Controller
 {
     public function index()
     {
-        $keywords = Keyword::all();
+        $user = auth()->user();
+        $keywords = $user->keywords;
         $searchKeywords = [];
         foreach ($keywords as $keyword) {
             $searchKeywords[$keyword->id] = $keyword->searchKeywords;
