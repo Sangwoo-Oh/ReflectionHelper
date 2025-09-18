@@ -41,9 +41,9 @@ Route::get('/', function (?CalendarServiceInterface $calendarServiceInterface) {
 Route::get('/google/redirect', [GoogleController::class, 'redirectToGoogle']);
 Route::get('/google/callback', [GoogleController::class, 'handleCallback']);
 
-Route::post('/aggregate', [AggregateController::class, 'aggregateEvents'])->name('aggregate');
 Route::middleware([Authenticate::class])->group(function () {
     Route::resource('keywords', KeywordController::class)->only(['index', 'show', 'edit', 'store', 'update', 'destroy']);
     Route::resource('search-keywords', SearchKeywordController::class)->only(['store', 'update', 'destroy']);
+    Route::post('/aggregate', [AggregateController::class, 'aggregateEvents'])->name('aggregate');
     Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
 });

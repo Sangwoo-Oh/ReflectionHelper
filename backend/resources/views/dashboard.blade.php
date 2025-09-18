@@ -64,11 +64,11 @@
             <tbody>
                 @foreach (session('events') as $event)
                 <tr>
-                    <td>{{ $event->getStart()->dateTime }}</td>
-                    <td>{{ $event->getSummary() }}</td>
-                    <td>{{ $event->getStart()->dateTime }}</td>
-                    <td>{{ $event->getEnd()->dateTime }}</td>
-                    <td>15時間</td>
+                    <td>{{ explode('T', $event['start_time'])[0] }}</td>
+                    <td>{{ $event['summary'] }}</td>
+                    <td>{{ $event['start_time'] }}</td>
+                    <td>{{ $event['end_time'] }}</td>
+                    <td>{{ $event['duration_h'] }}時間</td>
                 </tr>
                 @endforeach
             </tbody>

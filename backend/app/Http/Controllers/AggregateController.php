@@ -11,6 +11,19 @@ class AggregateController extends Controller
 {
     public function aggregateEvents(Request $request, CalendarServiceInterface $calendarServiceInterface)
     {
+        $user = auth()->user();
+        $calendar = $user->calendar;
+        if (!$calendar) {
+            // カレンダーが存在しない場合、全件取得
+            $calendarServiceInterface->loadAllEvents();
+        } else {
+            // etagが異なる場合、差分取得
+            $listEventsEtag = $calendarServiceInterface->getListEventsEtag();
+            if ($calendar->list_events_etag !== $listEventsEtag) {
+                $calendarServiceInterface->loadDeltaEvents();
+            }
+        }
+
         $freeword = $request->input('freeword') ?? '';
         $keyword = $request->input('keyword') ?? '';
         $startDate = $request->input('start_date');
@@ -30,21 +43,38 @@ class AggregateController extends Controller
         }
 
         $events = [];
-        foreach ($queries as $query) {
-            $events = array_merge($events, $calendarServiceInterface->listEvents($query, $startDate, $endDate));
+        $eventsQuery = auth()->user()->calendar->events();
+
+        $eventsQuery->where(function ($q) use ($queries) {
+            foreach ($queries as $query) {
+                $q->orWhere('summary', 'like', '%' . $query . '%');
+            }
+        });
+
+        if ($startDate) {
+            $eventsQuery->where('start_time', '>=', $startDate->format('Y-m-d') . 'T00:00:00Z');
+        }
+        if ($endDate) {
+            $eventsQuery->where('end_time', '<=', $endDate->format('Y-m-d') . 'T23:59:59Z');
         }
 
-        $events = array_unique($events, SORT_REGULAR);
+        $events = $eventsQuery->get();
+
         // dd($events);
         $summary = [];
         $sumDuration = 0;
         foreach ($events as $event) {
-            if (isset($event['start']) && isset($event['end'])) {
-                $start = new DateTime($event['start']->dateTime);
-                $end = new DateTime($event['end']->dateTime);
+            if (isset($event['start_time']) && isset($event['end_time'])) {
+                $start = new DateTime($event['start_time']);
+                $end = new DateTime($event['end_time']);
                 $duration = $end->getTimestamp() - $start->getTimestamp();
                 $sumDuration += $duration;
             }
+        }
+
+        foreach ($events as $key => $event) {
+            $events[$key]['duration_h'] = isset($event['start_time']) && isset($event['end_time']) ? (new DateTime($event['end_time']))->getTimestamp() - (new DateTime($event['start_time']))->getTimestamp() : 0;
+            $events[$key]['duration_h'] = round($events[$key]['duration_h'] / 3600, 2);
         }
 
         $sumDuration /= 60 * 60; // 秒を時間に変換
@@ -53,8 +83,8 @@ class AggregateController extends Controller
 
         $countDays = [];
         foreach ($events as $event) {
-            if (isset($event['start'])) {
-                $start = new DateTime($event['start']->dateTime);
+            if (isset($event['start_time'])) {
+                $start = new DateTime($event['start_time']);
                 $day = $start->format('Y-m-d');
                 $countDays[$day] = true;
             }
