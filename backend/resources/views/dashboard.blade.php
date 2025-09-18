@@ -30,6 +30,27 @@
         </form>
         @if (session('events'))
 
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">合計時間</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.sumDuration') }} </span>時間</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">平均時間</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.averageDuration') }} </span>時間</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">活動日数</h5>
+                <p class="card-text"><span class="display-1">{{ session('summary.countDays') }} </span>日</p>
+                </div>
+            </div>
+            </div>
+
         <table class="table">
             <thead>
                 <tr>
