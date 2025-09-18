@@ -11,21 +11,21 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
                     @auth
-                        <a class="nav-link active" aria-current="page" href="{{ url('/logout') }}">ログアウト</a>
-                    @else
-                        <a class="nav-link active" aria-current="page" href="{{ url('/google/redirect') }}">ログイン</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/keywords') }}">キーワード管理</a>
+                    </li>
                     @endauth
-                </li>
-                @auth
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/keywords') }}">キーワード管理</a>
-                </li>
-                @endauth
-            </ul>
+                    <li class="nav-item">
+                        @auth
+                            <a class="nav-link active" aria-current="page" href="{{ url('/logout') }}">ログアウト</a>
+                        @else
+                            <a class="nav-link active" aria-current="page" href="{{ url('/google/redirect') }}">ログイン</a>
+                        @endauth
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
