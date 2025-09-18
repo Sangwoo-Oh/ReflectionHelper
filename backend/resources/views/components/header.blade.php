@@ -13,6 +13,9 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">ダッシュボード</a>
+                    </li>
                     @auth
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/keywords') }}">キーワード管理</a>
@@ -20,9 +23,9 @@
                     @endauth
                     <li class="nav-item">
                         @auth
-                            <a class="nav-link active" aria-current="page" href="{{ url('/logout') }}">ログアウト</a>
+                            <a class="nav-link" aria-current="page" href="{{ url('/logout') }}">ログアウト</a>
                         @else
-                            <a class="nav-link active" aria-current="page" href="{{ url('/google/redirect') }}">ログイン</a>
+                            <a class="nav-link" aria-current="page" href="{{ url('/google/redirect') }}">ログイン</a>
                         @endauth
                     </li>
                 </ul>
