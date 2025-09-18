@@ -10,4 +10,12 @@ interface CalendarServiceInterface
         \DateTime $endDate = null,
         string $calendarId = 'primary'
     ): array;
+
+    public function getCalendarEtag(): string;
+
+    public function getListEventsEtag(): string;
+
+    public function loadAllEvents(): void;
+
+    public function loadDeltaEvents(): void;
 }
