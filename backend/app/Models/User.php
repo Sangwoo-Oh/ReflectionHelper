@@ -17,6 +17,11 @@ class User extends Authenticatable
         return $this->hasMany(Keyword::class);
     }
 
+    public function calendar()
+    {
+        return $this->hasOne(Calendar::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
