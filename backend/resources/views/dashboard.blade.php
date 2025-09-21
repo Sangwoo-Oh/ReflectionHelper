@@ -77,8 +77,8 @@
                         </td>
                         <td>{{ explode('T', $event['start_time'])[0] }}</td>
                         <td>{{ $event['summary'] }}</td>
-                        <td>{{ $event['start_time'] }}</td>
-                        <td>{{ $event['end_time'] }}</td>
+                        <td>{{ $event['start_time_h'] }}</td>
+                        <td>{{ $event['end_time_h'] }}</td>
                         <td>{{ $event['duration_h'] }}時間</td>
                     </tr>
                     @endforeach

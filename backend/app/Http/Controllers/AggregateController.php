@@ -81,6 +81,11 @@ class AggregateController extends Controller
         }
 
         foreach ($events as $key => $event) {
+            // 開始時間、終了時間をHH:MM形式に変換して追加
+            $events[$key]['start_time_h'] = isset($event['start_time']) ? (new DateTime($event['start_time']))->format('H:i') : '';
+            $events[$key]['end_time_h'] = isset($event['end_time']) ? (new DateTime($event['end_time']))->format('H:i') : '';
+            
+            // 各イベントのduration_hを計算して追加
             $events[$key]['duration_h'] = isset($event['start_time']) && isset($event['end_time']) ? (new DateTime($event['end_time']))->getTimestamp() - (new DateTime($event['start_time']))->getTimestamp() : 0;
             $events[$key]['duration_h'] = round($events[$key]['duration_h'] / 3600, 2);
         }
