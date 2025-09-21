@@ -21,12 +21,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="start_date" class="form-label">開始日</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old('start_date', $start_date ?? '') }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="end_date" class="form-label">終了日</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ old('end_date', $end_date ?? '') }}">
+                        <label for="date_range" class="form-label">日付範囲選択（開始日 - 終了日）</label>
+                        <div class="react-root" data-components='Datepicker' data-props='@json(["start_date" => $start_date ?? null, "end_date" => $end_date ?? null])'></div>
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">集計</button>

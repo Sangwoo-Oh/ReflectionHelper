@@ -5,3 +5,5 @@
 
 @component('components.footer')
 @endcomponent
+
+@vite('resources/js/react/app.jsx')
