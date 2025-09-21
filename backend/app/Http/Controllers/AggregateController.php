@@ -105,6 +105,16 @@ class AggregateController extends Controller
 
         // dd($events);
 
-        return redirect()->route('dashboard')->withInput()->with('events', $events)->with('summary', $summary); // 集計結果保持
+        $keywords = $user->keywords;
+
+        return view('dashboard', [
+            'events' => $events,
+            'summary' => $summary,
+            'freeword' => $freeword,
+            'keyword' => $keyword,
+            'keywords' => $keywords,
+            'start_date' => $startDate ? $startDate->format('Y-m-d') : '',
+            'end_date' => $endDate ? $endDate->format('Y-m-d') : '',
+        ]);
     }
 }
