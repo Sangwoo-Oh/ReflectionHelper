@@ -23,6 +23,9 @@
                     @endauth
                     <li class="nav-item">
                         @auth
+                            <li>
+                                <a class="nav-link" href="{{ url('/settings') }}">設定</a>
+                            </li>
                             <a class="nav-link" aria-current="page" href="{{ url('/logout') }}">ログアウト</a>
                         @else
                             <a class="nav-link" aria-current="page" href="{{ url('/google/redirect') }}">ログイン</a>

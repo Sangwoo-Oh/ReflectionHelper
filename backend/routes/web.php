@@ -46,4 +46,8 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::resource('search-keywords', SearchKeywordController::class)->only(['store', 'update', 'destroy']);
     Route::post('/aggregate', [AggregateController::class, 'aggregateEvents'])->name('aggregate');
     Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
+
+    Route::get('/settings', function() {
+        return view('settings');
+    });
 });
