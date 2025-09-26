@@ -98,8 +98,11 @@ class GoogleCalendarService implements CalendarServiceInterface
                     'maxResults' => 500,
                     'pageToken' => $nextPageToken,
                     'singleEvents' => true,
+                    'timeMax' => (new DateTime('2038-01-19 03:14:07.499999'))->format(DateTime::RFC3339),
+                    'timeMin' => (new DateTime('1970-01-01 00:00:01.000000'))->format(DateTime::RFC3339),
                 ]
             );
+            // dd((new DateTime('1970-01-01 00:00:01.000000'))->format(DateTime::RFC3339), (new DateTime('2038-01-19 03:14:07.499999'))->format(DateTime::RFC3339));
             \App\Models\Event::insert(array_map(function($event) {
                 return [
                     'calendar_id' => auth()->user()->calendar->id,
@@ -145,6 +148,13 @@ class GoogleCalendarService implements CalendarServiceInterface
                     }
                 } else {
                     // イベントが追加または更新された場合
+                    // TIMESTAMP型の制約上、以下の期間以外の日時はスキップ
+                    $startTime = $event->getStart() ? ($event->getStart()->getDateTime() ?? $event->getStart()->getDate()) : null;
+                    $endTime = $event->getEnd() ? ($event->getEnd()->getDateTime() ?? $event->getEnd()->getDate()) : null;
+                    if ($startTime < (new DateTime('1970-01-01 00:00:01'))->format(DateTime::RFC3339) || $endTime > (new DateTime('2038-01-19 03:14:07'))->format(DateTime::RFC3339)) {
+                        continue;
+                    }
+
                     $data = [
                         'calendar_id' => $calendar->id,
                         'event_id' => $event->getId(),
@@ -153,6 +163,7 @@ class GoogleCalendarService implements CalendarServiceInterface
                         'start_time' => $event->getStart() ? ($event->getStart()->getDateTime() ?? $event->getStart()->getDate()) : null,
                         'end_time' => $event->getEnd() ? ($event->getEnd()->getDateTime() ?? $event->getEnd()->getDate()) : null,
                     ];
+                    // dd($event);
                     if ($existingEvent) {
                         $existingEvent->update($data);
                     } else {
