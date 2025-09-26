@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
@@ -20,4 +21,13 @@ class Event extends Model
         'end_time',
     ];
 
+    public function getStartTimeAttribute($value)
+    {
+        return Carbon::parse($value)->timezone(auth()->user()->calendar->time_zone);
+    }
+
+    public function getEndTimeAttribute($value)
+    {
+        return Carbon::parse($value)->timezone(auth()->user()->calendar->time_zone);
+    }
 }
