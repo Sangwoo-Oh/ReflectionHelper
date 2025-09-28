@@ -26,7 +26,7 @@ class WithinOneYear implements ValidationRule
         $end   = Carbon::parse($value);
 
         if ($start->diffInDays($end) > 365) {
-            $fail("The range between start date and end date must be within one year.")->translate();
+            $fail('validation.date_range_one_year')->translate();
         }
     }
 }
