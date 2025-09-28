@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">ダッシュボード</a>
+                        <a class="nav-link" href="{{ url('/') }}">集計・分析</a>
                     </li>
                     @auth
                     <li class="nav-item">

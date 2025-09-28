@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CalendarServiceInterface;
+use App\Models\Calendar;
 use App\Models\SearchKeyword;
 use App\Rules\WithinOneYear;
 use DateTime;
@@ -11,6 +12,35 @@ use Illuminate\Support\Facades\Validator;
 
 class AggregateController extends Controller
 {
+    public function index(?CalendarServiceInterface $calendarServiceInterface)
+    {
+        $user = auth()->user();
+        if ($user) {
+            // ロード処理
+            // 1. 全件取得してDBに保存
+            //   - 条件：ユーザーIDに紐づくカレンダーが存在しない場合
+            // 2. 差分取得してDBに保存
+            //   - 条件：ユーザーIDに紐づくカレンダーが存在する && etagの値が異なる場合
+            $calendar = Calendar::where('user_id', $user->id)->first();
+            if (!$calendar) {
+                // カレンダーが存在しない場合、全件取得
+                $calendarServiceInterface->loadAllEvents();
+            } else {
+                // etagが異なる場合、差分取得
+                $listEventsEtag = $calendarServiceInterface->getListEventsEtag();
+                if ($calendar->list_events_etag !== $listEventsEtag) {
+                    $calendarServiceInterface->loadDeltaEvents();
+                }
+            }
+
+            $keywords = $user->keywords;
+            // dd($keywords);
+            return view('dashboard', compact('keywords'));
+        } else {
+            return view('dashboard');
+        }
+    }
+    
     public function aggregateEvents(Request $request, CalendarServiceInterface $calendarServiceInterface)
     {
         // dd($request->input('reaggregate'));
