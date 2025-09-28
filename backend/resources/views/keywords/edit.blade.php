@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', 'キーワード編集')
+
 @section('content')
     <h1>キーワード編集画面</h1>
     <form action="{{ route('keywords.update', $keyword->id) }}" method="POST">

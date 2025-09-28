@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', '集計・分析')
+
 @section('content')
     @auth
         <h2>集計・分析</h2>

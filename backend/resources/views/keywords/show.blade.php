@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', 'キーワード詳細')
+
 @section('content')
     <h1>キーワード詳細画面</h1>
         @csrf

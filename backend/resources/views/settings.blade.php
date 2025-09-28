@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', '設定')
+
 @section('content')
     <h2>設定</h2>
     <div class="card">

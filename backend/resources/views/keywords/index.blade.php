@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', 'キーワード管理')
+
 @section('content')
     <h1>キーワード管理ページ</h1>
     @if(session('success'))
