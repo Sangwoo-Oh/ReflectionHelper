@@ -3,6 +3,15 @@
 @section('content')
     @auth
         <h2>集計・分析</h2>
+        @if($errors->any())
+            @component('components.alert', ['type' => 'danger'])
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endcomponent
+        @endif
         <div class="card mb-3">
             <div class="card-body">
                 <form action="{{ route('aggregate') }}" method="POST" class="mb-0">
@@ -16,12 +25,12 @@
                         <select class="form-select" name="keyword">
                             <option value="">選択してください</option>
                             @foreach ($keywords as $keyword)
-                            <option value="{{ $keyword->id }}" {{ (old('keyword', $keyword ?? '')) == $keyword->id ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
+                            <option value="{{ $keyword->id }}" {{ (old('keyword', $keyword->id ?? '')) == $keyword->id ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="date_range" class="form-label">日付範囲選択（開始日 - 終了日）</label>
+                        <label for="date_range" class="form-label">期間選択（開始日 - 終了日）<span class="text-danger">*</span></label>
                         <div class="react-root" data-components='Datepicker' data-props='@json(["start_date" => $start_date ?? null, "end_date" => $end_date ?? null])'></div>
                     </div>
                     <div class="text-end">

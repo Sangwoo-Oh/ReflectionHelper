@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\CalendarServiceInterface;
 use App\Models\SearchKeyword;
+use App\Rules\WithinOneYear;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AggregateController extends Controller
 {
@@ -25,6 +27,15 @@ class AggregateController extends Controller
             if ($calendar->list_events_etag !== $listEventsEtag) {
                 $calendarServiceInterface->loadDeltaEvents();
             }
+        }
+
+        $validater = Validator::make($request->all(), [
+            'start_date' => ['required', 'date_format:Y-m-d'],
+            'end_date' => ['required', 'date_format:Y-m-d', new WithinOneYear($request->input('start_date'))],
+        ]);
+
+        if ($validater->fails()) {
+            return redirect('/')->withErrors($validater)->withInput();
         }
 
         $freeword = $request->input('freeword') ?? '';
