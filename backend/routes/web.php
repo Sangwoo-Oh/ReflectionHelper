@@ -5,6 +5,7 @@ use App\Http\Controllers\AggregateController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\SearchKeywordController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use App\Models\Calendar;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,7 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::resource('search-keywords', SearchKeywordController::class)->only(['store', 'update', 'destroy']);
     Route::post('/aggregate', [AggregateController::class, 'aggregateEvents'])->name('aggregate');
     Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
-
+    Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
     Route::get('/settings', function() {
         return view('settings');
     });
