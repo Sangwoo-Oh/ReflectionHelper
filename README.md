@@ -18,6 +18,8 @@
 * Googleカレンダーを普段から利用していること
 * ブラウザが使用できる環境
 
+## URL
+[https://aggregate-calendar.sangwoo-oh.com](https://aggregate-calendar.sangwoo-oh.com)
 ## 主な機能
 
 ### 1. Googleカレンダー連携
