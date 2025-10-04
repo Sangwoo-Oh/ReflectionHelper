@@ -23,3 +23,10 @@ Route::middleware([Authenticate::class])->group(function () {
         return view('settings');
     });
 });
+
+Route::get('/privacy', function() {
+    return view('privacy');
+})->name('privacy');
+Route::get('/terms', function() {
+    return view('terms');
+})->name('terms');
