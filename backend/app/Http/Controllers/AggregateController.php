@@ -59,13 +59,16 @@ class AggregateController extends Controller
             }
         }
 
-        $validater = Validator::make($request->all(), [
-            'start_date' => ['required', 'date_format:Y-m-d'],
-            'end_date' => ['required', 'date_format:Y-m-d', new WithinOneYear($request->input('start_date'))],
-        ]);
 
-        if ($validater->fails()) {
-            return redirect('/')->withErrors($validater)->withInput();
+        if(!$is_reaggregate) {
+            $validater = Validator::make($request->all(), [
+                'start_date' => ['required', 'date_format:Y-m-d'],
+                'end_date' => ['required', 'date_format:Y-m-d', new WithinOneYear($request->input('start_date'))],
+            ]);
+    
+            if ($validater->fails()) {
+                return redirect('/')->withErrors($validater)->withInput();
+            }
         }
 
         $freeword = $request->input('freeword') ?? '';
