@@ -160,7 +160,7 @@ class AggregateController extends Controller
             'events' => $events,
             'summary' => $summary,
             'freeword' => $freeword,
-            'keyword' => $keyword,
+            'selected_keyword' => $keyword,
             'keywords' => $keywords,
             'start_date' => $startDate ? $startDate->format('Y-m-d') : '',
             'end_date' => $endDate ? $endDate->format('Y-m-d') : '',

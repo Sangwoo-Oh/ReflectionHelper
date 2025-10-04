@@ -27,7 +27,7 @@
                         <select class="form-select" name="keyword">
                             <option value="">選択してください</option>
                             @foreach ($keywords as $keyword)
-                            <option value="{{ $keyword->id }}" {{ (old('keyword', $keyword->id ?? '')) == $keyword->id ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
+                            <option value="{{ $keyword->id }}" {{ (old('keyword', $selected_keyword ?? '')) == $keyword->id ? 'selected' : '' }}>{{ $keyword->keyword }}</option>
                             @endforeach
                         </select>
                     </div>
