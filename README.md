@@ -3,8 +3,11 @@
 シューカレは、Googleカレンダーと連携して過去の予定を集計・分析し、日常の振り返りをサポートするWebサービスです。
 自分がどのように時間を使ったかを可視化することで、より充実した毎日を送るための気づきを得られます。
 
-## 想定ユーザー
+## デモ動画
+![demo](https://github.com/user-attachments/assets/2eb90af4-021d-487e-a73b-293247cac6ff)
 
+
+## 想定ユーザー
 * 過去の自分の活動時間を可視化したい人
 * 勉強・習慣・趣味などのトラッキングを行いたい人
 * 毎日の生活を振り返る習慣をつけたい人
@@ -15,6 +18,8 @@
 * Googleカレンダーを普段から利用していること
 * ブラウザが使用できる環境
 
+## URL
+[https://aggregate-calendar.sangwoo-oh.com](https://aggregate-calendar.sangwoo-oh.com)
 ## 主な機能
 
 ### 1. Googleカレンダー連携
@@ -38,17 +43,17 @@
 
 1. Googleアカウントでログイン
 2. キーワードを作成
+
 3. 過去の予定を集計
 4. グラフで可視化
 
-## For developers: ローカルでの実行方法
-
+## For developers
+### ローカルでの実行手順
 ```
 To be added
 ```
 
-## よくある不具合と解決方法
-
-### 1. ログイン処理が走った時にLaravel\Socialite\Two\InvalidStateExceptionが投げられる
+### よくある不具合と解決方法
+#### 1. ログイン処理が走った時にLaravel\Socialite\Two\InvalidStateExceptionが投げられる
 
 クライアントのURIとユーザーログイン後のリダイレクトURIのオリジンが異なりCookieを通じて交換される情報（state）が失われることが原因であることが多いです。Google Cloud Platformコンソールで設定した承認済みのリダイレクトURIのオリジンと同じオリジンでブラウザからアプリを立ち上げてください。localhostで設定したのなら、localhostでブラウザを立ち上げる。
