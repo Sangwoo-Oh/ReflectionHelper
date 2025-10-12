@@ -80,6 +80,8 @@
                     'freeword' => $freeword,
                     'keyword' => $selected_keyword,
                     'excluded_string' => $excluded_string,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
                     'csrfToken' => $csrfToken,
                 ];
             @endphp
