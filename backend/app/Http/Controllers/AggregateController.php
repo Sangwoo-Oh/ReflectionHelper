@@ -73,6 +73,7 @@ class AggregateController extends Controller
 
         $freeword = $request->input('freeword') ?? '';
         $keyword = $request->input('keyword') ?? '';
+        $excluded_string = $request->input('excluded_string') ?? '';
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $startDate = isset($startDate) ? new DateTime($startDate) : null;
@@ -81,6 +82,7 @@ class AggregateController extends Controller
         // dd($freeword, $startDate, $endDate);
 
         $queries = [];
+        $excludedWords = [];
         if (!empty($freeword)) {
             $queries[] = $freeword;
         }
@@ -88,6 +90,12 @@ class AggregateController extends Controller
             $searchKeywords = SearchKeyword::where('keyword_id', $keyword);
             $queries = array_merge($searchKeywords->pluck('search_keyword')->toArray(), $queries);
         }
+        // dd($queries);
+        if (!empty($excluded_string)) {
+            // カンマ（全角・半角）、スペース（全角・半角）で分割して配列にする
+            $excludedWords = preg_split('/[,、\s\x{3000}]+/u', $excluded_string, -1, PREG_SPLIT_NO_EMPTY);
+        }
+        // dd($excludedWords);
 
         $events = [];
         $eventsQuery = auth()->user()->calendar->events();
@@ -100,6 +108,13 @@ class AggregateController extends Controller
             $eventsQuery->where(function ($q) use ($queries) {
                 foreach ($queries as $query) {
                     $q->orWhere('summary', 'like', '%' . $query . '%');
+                }
+            });
+
+            // 除外キーワードの条件を追加
+            $eventsQuery->where(function ($q) use ($excludedWords) {
+                foreach ($excludedWords as $word) {
+                    $q->where('summary', 'not like', '%' . $word . '%');
                 }
             });
         }
@@ -162,6 +177,7 @@ class AggregateController extends Controller
             'freeword' => $freeword,
             'selected_keyword' => $keyword,
             'keywords' => $keywords,
+            'excluded_string' => $excluded_string,
             'start_date' => $startDate ? $startDate->format('Y-m-d') : '',
             'end_date' => $endDate ? $endDate->format('Y-m-d') : '',
         ]);

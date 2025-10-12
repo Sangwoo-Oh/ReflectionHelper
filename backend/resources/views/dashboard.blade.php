@@ -32,6 +32,13 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label for="excluded_string" class="form-label">検索結果に含めない文字列</label>
+                        <input type="text" class="form-control" id="excluded_string" name="excluded_string" value="{{ old('excluded_string', $excluded_string ?? '') }}">
+                        <div id="excludedStringHelpBlock" class="form-text">
+                            検索結果に含めたくない文字列を入力してください。複数ある場合は半角/全角カンマあるいは半角/全角スペースで区切ってください。<br>例）会議,打ち合わせ、研修　セミナー
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label for="date_range" class="form-label">期間選択（開始日 - 終了日）<span class="text-danger">*</span></label>
                         <div class="react-root" data-components='Datepicker' data-props='@json(["start_date" => $start_date ?? null, "end_date" => $end_date ?? null])'></div>
                     </div>
@@ -65,10 +72,11 @@
         <form action="{{ route('aggregate') }}" method="POST">
             @csrf
             <input type="hidden" name="reaggregate" value=1>
-            <input type="hidden" name="freeword" value="{{ old('freeword') }}">
-            <input type="hidden" name="keyword" value="{{ old('keyword') }}">
-            <input type="hidden" name="start_date" value="{{ old('start_date') }}">
-            <input type="hidden" name="end_date" value="{{ old('end_date') }}">
+            <input type="hidden" name="freeword" value="{{ old('freeword', $freeword ?? '') }}">
+            <input type="hidden" name="keyword" value="{{ old('keyword', $selected_keyword ?? '') }}">
+            <input type="hidden" name="excluded_string" value="{{ old('excluded_string', $excluded_string ?? '') }}">
+            <input type="hidden" name="start_date" value="{{ old('start_date', $start_date ?? '') }}">
+            <input type="hidden" name="end_date" value="{{ old('end_date', $end_date ?? '') }}">
             <table class="table mb-3">
                 <thead>
                     <tr>
