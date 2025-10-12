@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Datepicker from './components/Datepicker';
+import Table from './components/Table';
 
 const components = {
     'Datepicker': Datepicker,
+    'Table': Table
 }
 
 const rootElements = document.querySelectorAll('.react-root');
