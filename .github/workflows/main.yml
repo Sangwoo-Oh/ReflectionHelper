@@ -55,7 +55,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # 成果物を転送
-          scp -r dist/* ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
+          scp -i ~/.ssh/id_rsa -r dist/* ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}
 
       - name: SSH and git pull
         env:
