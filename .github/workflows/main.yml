@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "ci" ]
+    branches: [ "main" ]
 
 jobs:
   # build-frontend:
@@ -70,7 +70,6 @@ jobs:
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
             echo "Connected to remote server"
             cd /var/www/aggregate-calendar/public/ReflectionHelper
-            git fetch origin ci
-            git pull origin ci
-            pwd 
+            git fetch origin main
+            git pull origin main
           EOF
