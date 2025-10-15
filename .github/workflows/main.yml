@@ -69,6 +69,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
             echo "Connected to remote server"
-            cd $PROJECT_PATH
+            cd /var/www/aggregate-calendar/public/ReflectionHelper
             pwd 
           EOF
