@@ -10,30 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '22'
 
-      - name: Install dependencies
-        run: cd backend && npm install
+      # - name: Install dependencies
+      #   run: cd backend && npm install
 
-      - name: Build project
-        run: cd backend && npm run build
+      # - name: Build project
+      #   run: cd backend && npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: backend/public/build/ # build成果物フォルダに合わせて変更
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: frontend-dist
+      #     path: backend/public/build/ # build成果物フォルダに合わせて変更
 
   deploy:
     name: Deploy to remote server
     runs-on: ubuntu-latest
-    needs: build-frontend  # build後に実行
+    # needs: build-frontend  # build後に実行
 
     steps:
       # - name: Download build artifacts
@@ -67,4 +67,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ls
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
+            echo "Connected to remote server"
+          EOF
